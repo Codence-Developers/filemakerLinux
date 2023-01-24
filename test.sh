@@ -1,1 +1,1 @@
-echo TEST123 ${1}
+echo "TEST123 ${1}"
