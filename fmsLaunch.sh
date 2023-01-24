@@ -40,7 +40,7 @@ FQDN=${1}
 SSL_EMAIL=${2}
 FM_KEY=${3}
 USER="admin"
-PASS=${4}
+PASS1=${4}
 PIN1=${5}
 
 # Upgrade packages and install required packages.
