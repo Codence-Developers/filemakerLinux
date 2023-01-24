@@ -41,7 +41,7 @@ SSL_EMAIL=${2}
 FM_KEY=${3}
 USER="admin"
 PASS=${4}
-PIN=${5}
+PIN1=${5}
 
 # Upgrade packages and install required packages.
 apt update
