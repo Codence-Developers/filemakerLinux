@@ -130,7 +130,8 @@ sed -i "s|FLAG_FILE=/home/ubuntu/sslDeployFlag|FLAG_FILE=\"${FLAG_FILE}\"|g" "${
 # Issue an SSL certificate
 certbot certonly --webroot -w "${WEBROOT}" -d "${FQDN}" -m "${SSL_EMAIL}" --no-eff-email --non-interactive --agree-tos
 
-# Run the SSL installation script; flag file should have been created during the prior step.
+# Create the flag file and run the SSL installation script.
+touch "${FLAG_FILE}"
 "${SSL_SCRIPT}"
 ################################# END #################################
 
