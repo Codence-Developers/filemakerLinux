@@ -135,5 +135,44 @@ touch "${FLAG_FILE}"
 "${SSL_SCRIPT}"
 ################################# END #################################
 
+#######################################################################
+##### Mount and link external FileMaker data and backup volumes. ######
+#######################################################################
+# Stop FileMaker Server and backup the current filesystem table.
+systemctl stop fmshelper
+cp /etc/fstab /etc/fstab.bak
+
+# Create the mount points and assign ownership to FileMaker Server.
+mkdir /FileMakerData
+mkdir /FileMakerBackups
+chown fmserver:fmsadmin /FileMakerData
+chown fmserver:fmsadmin /FileMakerBackups
+
+# Create and mount the volumes; identified by their disk size.
+mkfs -t ext4 "/dev/`lsblk | grep ${FMDATA_SIZE} | awk '{print $1;}'`"
+mkfs -t ext4 "/dev/`lsblk | grep ${FMBACKUPS_SIZE} | awk '{print $1;}'`"
+mount "/dev/`lsblk | grep ${FMDATA_SIZE} | awk '{print $1;}'`" /FileMakerData
+mount "/dev/`lsblk | grep ${FMBACKUPS_SIZE} | awk '{print $1;}'`" /FileMakerBackups
+
+# Configure the volumes to mount at boot; identified by their mount points.
+echo "UUID=`lsblk -o +UUID | grep FileMakerData | grep -oE '[^[:space:]]+$'` /FileMakerData ext4 defaults,nofail 0 2" >> /etc/fstab
+echo "UUID=`lsblk -o +UUID | grep FileMakerBackups | grep -oE '[^[:space:]]+$'` /FileMakerBackups ext4 defaults,nofail 0 2" >> /etc/fstab
+
+# Create/move the FileMaker Server directories that will be stored on the external volumes and create links in the related FileMaker Server directories.
+mv "/opt/FileMaker/FileMaker Server/Data" /FileMakerData
+mv "/opt/FileMaker/FileMaker Server/Logs" /FileMakerData
+mv /FileMakerData/Data/Backups /FileMakerBackups/Backups
+mkdir /FileMakerBackups/Progressive
+ln -sv /FileMakerData/Data "/opt/FileMaker/FileMaker Server/Data"
+ln -sv /FileMakerData/Logs "/opt/FileMaker/FileMaker Server/Logs"
+ln -sv /FileMakerBackups/Backups /FileMakerData/Data/Backups
+ln -sv /FileMakerBackups/Progressive /FileMakerData/Data/Progressive
+
+# Recursively assign ownership of the installation directory and mount points to FileMaker Server.
+chown -R fmserver:fmsadmin "/opt/FileMaker/FileMaker Server"
+chown -R fmserver:fmsadmin /FileMakerData
+chown -R fmserver:fmsadmin /FileMakerBackups
+################################# END #################################
+
 # Reboot
 reboot now
