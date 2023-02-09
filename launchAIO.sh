@@ -15,6 +15,6 @@ chmod +x /root/fmsLaunch.sh
 
 # User Data:
 #   #!/bin/bash
-#   wget 'https://raw.githubusercontent.com/Codence-Developers/filemakerLinux/main/launch.sh' -O /root/launch.sh
+#   wget 'https://raw.githubusercontent.com/Codence-Developers/filemakerLinux/main/launchAIO.sh' -O /root/launch.sh
 #   chmod +x /root/launch.sh
 #   /root/launch.sh <ElasticIP> <FQDN> <SSL_Email> <FMS_License> <Admin_Password> <Admin_PIN> <FMData_Size> <FMBackups_Size>
