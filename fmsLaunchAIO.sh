@@ -5,8 +5,8 @@ WEBROOT="/opt/FileMaker/FileMaker Server/NginxServer/htdocs/httpsRoot/" # NGINX
 # WEBROOT="/opt/FileMaker/FileMaker Server/HTTPServer/htdocs/" # Apache
 
 # Specify the size of the FileMakerData and FileMakerBackups volumes; these must match the actual volume sizes.
-FMDATA_SIZE="10G"
-FMBACKUPS_SIZE="20G"
+FMDATA_SIZE=${7}
+FMBACKUPS_SIZE=${8}
 
 # FMS installation working directory.
 FMSDIR=/fms_install
