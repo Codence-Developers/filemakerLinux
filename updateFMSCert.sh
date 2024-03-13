@@ -11,7 +11,7 @@ FMS_USER=""
 FMS_PASS=""
 
 # Flag file created by certbot deploy-hook.
-FLAG_FILE=/home/ubuntu/sslDeployFlag
+FLAG_FILE=/home/ubuntu/sslDeploy_true
 ################################################
 
 
@@ -44,6 +44,12 @@ fmsadmin certificate delete --yes -u ${FMS_USER} -p ${FMS_PASS}
 
 # Import the new certificate.
 fmsadmin certificate import "${FMS}/CStore/fullchain.pem" --keyfile "${FMS}/CStore/privkey.pem" -y -u ${FMS_USER} -p ${FMS_PASS}
+
+# Close the FileMaker databases.
+fmsadmin close -u ${FMS_USER} -p ${FMS_PASS} -m "Databases will close in two minutes for scheduled maintenance." -t 120
+
+# Provide time for the databases to close. Two minutes for the user warning and two minutes to close the databases.
+sleep 240
 
 # Restart the FileMaker Server service
 sudo systemctl restart fmshelper
