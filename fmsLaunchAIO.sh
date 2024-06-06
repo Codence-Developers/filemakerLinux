@@ -15,7 +15,7 @@ FMSDIR=/fms_install
 SSL_SCRIPT="/root/updateFMSCert.sh"
 
 # Flag file created by certbot deploy-hook.
-FLAG_FILE=/home/ubuntu/sslDeployFlag
+FLAG_FILE=/home/ubuntu/sslDeploy_true
 
 # Retrieve the OS and version number.
 OS=`cat /etc/os-release | grep ^NAME | grep -o -P "(?<=\").*(?=\")"`
