@@ -11,7 +11,7 @@ FMS_USER=""
 FMS_PASS=""
 
 # Flag file created by certbot deploy-hook.
-FLAG_FILE=/home/ubuntu/sslDeploy_true
+FLAG_FILE=/home/ubuntu/sslDeployFlag
 ################################################
 
 
