@@ -3,6 +3,9 @@
 # closeAndUpdate.sh
 # Close FileMaker databases and install package updates.
 #
+# Run latest version of the script.
+# Note: Replace $FMS_USER and $FMS_PASS if the FMS environment variables have not been configured.
+# curl -fsSL https://raw.githubusercontent.com/Codence-Developers/filemakerLinux/main/closeAndUpdate.sh | bash -s -- -u $FMS_USER -p $FMS_PASS
 
 set -e
 
@@ -171,12 +174,18 @@ db_status() {
 }
 
 # Gracefully close databases and stop FileMaker Server before performing the upgrade.
-echo "Stopping FileMaker Server services..."
+echo "Stopping FileMaker Server service..."
 "$FMSADMIN_CMD" close -y -u "$FMS_USER" -p "$FMS_PASS" 2>/dev/null || true
 db_status
 systemctl stop fmshelper 2>/dev/null || true
 
 # Get and install package updates.
+# DEBIAN_FRONTEND=noninteractive; don't display interactive menus
+# NEEDRESTART_MODE=a; automatically restart services
+# Configuration file conflicts:
+#   Dpkg::Options::="--force-confdef"; default option when there are no local changes.
+#   Dpkg::Options::="--force-confold"; keep the old configuration when there are local changes.
+
 apt-get update
 
 DEBIAN_FRONTEND=noninteractive \
