@@ -99,7 +99,7 @@ backoff() {
 # Function to confirm that databases are closed.
 db_status() {
     local SLEEP_INTERVAL=10
-    local MAX_RETRY=6
+    local MAX_RETRY=7
     local RETRY_COUNT=0
     local OUTPUT
     local OPEN_DBS
@@ -175,7 +175,7 @@ db_status() {
 
 # Gracefully close databases and stop FileMaker Server before performing the upgrade.
 echo "Stopping FileMaker Server service..."
-"$FMSADMIN_CMD" close -y -u "$FMS_USER" -p "$FMS_PASS" 2>/dev/null || true
+"$FMSADMIN_CMD" close -y -u "$FMS_USER" -p "$FMS_PASS" -t 120 -m 'Databases will close in two minutes for scheduled maintenance.' 2>/dev/null || true
 db_status
 systemctl stop fmshelper 2>/dev/null || true
 
